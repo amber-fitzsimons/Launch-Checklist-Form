@@ -10,23 +10,26 @@ window.addEventListener("load", function() {
    let fuelStatus = document.getElementById("fuelStatus");
    let cargoStatus = document.getElementById("cargoStatus");
    let launchStatus = document.getElementById("launchStatus");
-   let missionTarget = document.getElementById("missionTarget")
+   let missionTarget = document.getElementById("missionTarget");
    let form = document.getElementById("launchForm");
+   
+   // Adjusted fetch json from original selection of Tatooine to be random. 
    
    fetch("https://handlers.education.launchcode.org/static/planets.json").then(function(response){
       response.json().then(function(json) {
-         missionTarget.innerHTML= 
+         let index = [Math.floor(Math.random()*json.length)];
+         missionTarget.innerHTML = 
          `<h2>Mission Destination</h2>
             <ol>
-               <li>Name: ${json[0].name}</li>
-               <li>Diameter: ${json[0].diameter}</li>
-               <li>Star: ${json[0].star}</li>
-               <li>Distance from Earth: ${json[0].distance} </li>
-               <li>Number of Moons: ${json[0].moons}</li>
-            <img src="${json[0].image}">
-            </ol>`
+               <li>Name: ${json[index].name}</li>
+               <li>Diameter: ${json[index].diameter}</li>
+               <li>Star: ${json[index].star}</li>
+               <li>Distance from Earth: ${json[index].distance} </li>
+               <li>Number of Moons: ${json[index].moons}</li>
+            </ol>
+            <img src="${json[index].image}">`
       });
-   });     
+   });  
   
    form.addEventListener("submit", function(event){
       pilotStatus.innerHTML = `Pilot ${pilotName.value} is ready for launch.`;
@@ -41,30 +44,31 @@ window.addEventListener("load", function() {
          faultyItems.style.visibility = `visible`;
          launchStatus.innerHTML =`Shuttle not ready for launch.`;
          launchStatus.style.color = `red`;
-         cargoStatus.innerHTML = `Cargo mass too high for launch.`
-         fuelStatus.innerHTML = `Fuel level too low for launch.`
+         cargoStatus.innerHTML = `Cargo mass too high for launch.`;
+         fuelStatus.innerHTML = `Fuel level too low for launch.`;
          event.preventDefault();   
       } else if (Number(fuelLevel.value) < 10000) {
          faultyItems.style.visibility = `visible`;
          launchStatus.innerHTML =`Shuttle not ready for launch.`;
          launchStatus.style.color = `red`;
-         fuelStatus.innerHTML = `Fuel level too low for launch.`
+         fuelStatus.innerHTML = `Fuel level too low for launch.`;
          event.preventDefault();
       } else if (Number(cargoMass.value) > 10000) {
          faultyItems.style.visibility = `visible`;
          launchStatus.innerHTML =`Shuttle not ready for launch.`;
          launchStatus.style.color = `red`;
-         cargoStatus.innerHTML = `Cargo mass too high for launch.`
+         cargoStatus.innerHTML = `Cargo mass too high for launch.`;
          event.preventDefault();
       } else {
-         faultyItems.style.visibility =`visible`
-         launchStatus.innerHTML =`Shuttle is ready for launch.`
-         launchStatus.style.color = `green`
-         cargoStatus.innerHTML = `Cargo mass low enough for launch.`
-         fuelStatus.innerHTML = `Fuel level high enough for launch.`
+         faultyItems.style.visibility =`visible`;
+         launchStatus.innerHTML =`Shuttle is ready for launch.`;
+         launchStatus.style.color = `green`;
+         cargoStatus.innerHTML = `Cargo mass low enough for launch.`;
+         fuelStatus.innerHTML = `Fuel level high enough for launch.`;
          event.preventDefault(); 
       };
    });
+   document.getElementById('input_field').value = '';
 }); 
 
 
